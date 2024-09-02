@@ -1,30 +1,14 @@
 
 
-table {
-    table-layout: fixed;
+.table {
 	width: 80%;
 	margin: 0 auto;
-    border-collapse: collapse;
-}
-
-td {
+	display: grid;
 	border: 2px solid #868D8D;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
-td {
-
-	font-family: 'Roboto Condensed', sans-serif;
-	font-size: 1.3em;
-	text-align: center;
-	vertical-align: center;
-	overflow: hidden;
-}
-
-td {
-	padding: 1em;
-	width: 15%;
-}
-td.checked {
+button.checked {
 	background: repeating-linear-gradient(
 		45deg,
 		#E0EBEB,
@@ -32,6 +16,21 @@ td.checked {
 		transparent 5px,
 		transparent 10px
 	);
+}
+
+button {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-size: 1.3em;
+	text-align: center;
+	vertical-align: center;
+	background: none;
+	box-shadow: none;
+	padding: 1em;
+	cursor: pointer;
+	border: 2px solid #868D8D;
+	min-height: 0;
+	min-width: 0;
+	overflow: hidden;
 }
 
 body {

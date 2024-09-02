@@ -10,7 +10,7 @@ function extract_random_element(array_) {
 var VERSION = "v2";
 
 onLoad = function() {
-	cells = document.querySelectorAll("td");
+	cells = document.querySelectorAll("button");
 
 	// Load and store state in local storage
 	state = localStorage.getItem(VERSION);
