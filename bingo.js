@@ -39,7 +39,13 @@ onLoad = function() {
 	}
 
 	state.tropes.forEach(function(_, i) {
-		cells[i].textContent = all_tropes[state.tropes[i]];
+		// Make an exception for the center box.
+		if(i == 12) {
+			cells[i].textContent = 'FREE SPACE';
+		}
+		else {
+			cells[i].textContent = all_tropes[state.tropes[i]];
+		}
 		// Set up click listener to toggle "checked" class on target element
 		cells[i].addEventListener("click", function (event) {
 			event.currentTarget.classList.toggle("checked");
@@ -129,4 +135,6 @@ all_tropes = [
 	"fic with less than two comments (before you)",
 	"takes place in a hotel room",
 	"altitude camp",
+	"double drabble",
+	"triple drabble",
 ]

@@ -33,6 +33,10 @@ button {
 	overflow: hidden;
 }
 
+.free-space {
+	font-weight: bold;
+}
+
 body {
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 400;
