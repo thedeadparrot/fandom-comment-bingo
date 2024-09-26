@@ -41,7 +41,7 @@ onLoad = function() {
 	state.tropes.forEach(function(_, i) {
 		// Make an exception for the center box.
 		if(i == 12) {
-			cells[i].textContent = 'FREE SPACE';
+			cells[i].innerHTML = 'FREE SPACE<br />(any work qualifies)';
 		}
 		else {
 			cells[i].textContent = all_tropes[state.tropes[i]];
