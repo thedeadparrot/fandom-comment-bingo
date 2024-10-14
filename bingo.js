@@ -8,6 +8,8 @@ function extract_random_element(array_) {
 }
 
 var VERSION = "v2";
+// FEET is in index 80 in the  trope array.
+var FEET = 80;
 
 onLoad = function() {
 	cells = document.querySelectorAll("button");
@@ -20,9 +22,11 @@ onLoad = function() {
 		all_tropes.forEach(function (_, i) {
 			trope_indexes.push(i);
 		});
+		// 1 in 100,000 chance of getting an all FEET board.
+		isFeet = random_range(0, 100000) == 0;
 		for (var i = 0; i < cells.length; i++) {
 			// Randomize content
-			tropes.push(extract_random_element(trope_indexes));
+			tropes.push(isFeet? FEET : extract_random_element(trope_indexes));
 		}
 		state = {
 			"tropes": tropes,
