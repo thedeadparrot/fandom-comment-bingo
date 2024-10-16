@@ -16,6 +16,11 @@ function saveState(state) {
 }
 
 onLoad = function() {
+	//Get stylesheet for document.
+	const styleEl = document.getElementsByTagName("style")[0];
+	const styleSheet = styleEl.sheet;
+	const notesToggleButton = document.getElementById("notes-toggle");
+
 	cells = document.querySelectorAll(".bingo-square");
 
 	// Load and store state in local storage
@@ -45,6 +50,19 @@ onLoad = function() {
 			}
 		}
 	}
+
+	// Setup toggle button.
+	notesToggleButton.addEventListener("click", function (event) {
+		if(notesToggleButton.textContent == "ON") {
+			styleSheet.insertRule(".notes {display: none;}", 0);
+			notesToggleButton.textContent = "OFF";
+		}
+		else {
+			styleSheet.deleteRule(0);
+			notesToggleButton.textContent = "ON";
+		}
+	});
+
 	// Bootstrap notes for backwards compatibility.
 	if(!state.hasOwnProperty('notes')){
 		state.notes = [];
@@ -74,15 +92,18 @@ onLoad = function() {
 			var notesState = state.notes.length > i ? state.notes[i] : null;
 			var urlNode = document.getElementById("url");
 			var notesTextNode = document.getElementById("notes-textarea");
+			// Load in notes if we have them.
 			if (notesState != null) {
 				urlNode.value = notesState.url;
 				notesTextNode.value = notesState.notes;
 			}
+			// Otherwise, set them to blank.
 			else {
 				urlNode.value = "";
 				notesTextNode.value = "";
 			}
 			dialog.showModal();
+			// Set the behavior for the modal to save the contents for the notes fields.
 			dialog.getElementsByTagName("button")[0].addEventListener("click", function(innerEvent){
 				dialog.close();
 				var url = urlNode.value;
