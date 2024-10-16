@@ -15,17 +15,8 @@ function saveState(state) {
 	localStorage.setItem(VERSION, JSON.stringify(state));
 }
 
-onLoad = function() {
-	//Get stylesheet for document.
-	const styleEl = document.getElementsByTagName("style")[0];
-	const styleSheet = styleEl.sheet;
-	const notesToggleButton = document.getElementById("notes-toggle");
-
-	cells = document.querySelectorAll(".bingo-square");
-
-	// Load and store state in local storage
-	state = localStorage.getItem(VERSION);
-	if (!state) {
+// Creates a brand new board.
+function generateNewBoard(cells, state) {
 		tropes = [];
 		trope_indexes = [];
 		all_tropes.forEach(function (_, i) {
@@ -40,9 +31,26 @@ onLoad = function() {
 		state = {
 			"tropes": tropes,
 			"checked": [],
+			"notes": [],
 		}
 		saveState(state);
-	} else {
+		return state;
+}
+
+onLoad = function() {
+	//Get stylesheet for document.
+	const styleEl = document.getElementsByTagName("style")[0];
+	const styleSheet = styleEl.sheet;
+	const notesToggleButton = document.getElementById("notes-toggle");
+
+	cells = document.querySelectorAll(".bingo-square");
+
+	// Load and store state in local storage
+	state = localStorage.getItem(VERSION);
+	if (!state) {
+		state = generateNewBoard(cells, state);
+	}
+	else {
 		state = JSON.parse(state);
 		for (var i = 0; i < cells.length; i++) {
 			if (state.checked[i]) {
@@ -104,14 +112,21 @@ onLoad = function() {
 			}
 			dialog.showModal();
 			// Set the behavior for the modal to save the contents for the notes fields.
-			dialog.getElementsByTagName("button")[0].addEventListener("click", function(innerEvent){
+			dialog.getElementsByClassName("save-and-close")[0].addEventListener("click", function(innerEvent){
 				dialog.close();
-				var url = urlNode.value;
-				var notesText = notesTextNode.value;
+				const url = urlNode.value;
+				const notesText = notesTextNode.value;
 				state.notes[i] = {'url': url, 'notes': notesText};
 				saveState(state);
 			});
+
+			// Set up go to button.
+			dialog.getElementsByClassName("go-to-url")[0].addEventListener("click", function(innerEvent){
+				var url = urlNode.value;
+				window.open(url, "BingoURLTab");
+			});
 		});
+
 	});
 
 	const resetButtons = document.querySelectorAll(".reset");
