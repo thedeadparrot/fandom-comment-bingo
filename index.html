@@ -17,33 +17,41 @@
 			<h1>Fandom Comment Bingo</h1>
 			<p>Click on a square to fill it in/check it off. Progress will be saved to your browser. If you would like a brand new bingo board, you can <a href="#" class="reset">generate a new card</a>.
 		</div>
+		<dialog id="notes-dialog">
+			<p>Save notes for the current square.</p>
+			<p><label for="url-input">Fic URL:</label></p>
+			<p><input type="text" name="url-input" id="url" value=""></p>
+			<p><label for="notes-text">Notes:</label></p>
+			<p><textarea name="notes-text" id="notes-textarea" rows="10" cols="50"></textarea></p>
+			<p><button>Save and Close</button></p>
+		</dialog>
 		<div id="mid">
 			<div class="table">
-				<button>A</button>
-				<button>B</button>
-				<button>C</button>
-				<button>D</button>
-				<button>E</button>
-				<button>A</button>
-				<button>B</button>
-				<button>C</button>
-				<button>D</button>
-				<button>E</button>
-				<button>A</button>
-				<button>B</button>
-				<button class="free-space">C</button>
-				<button>D</button>
-				<button>E</button>
-				<button>A</button>
-				<button>B</button>
-				<button>C</button>
-				<button>D</button>
-				<button>E</button>
-				<button>A</button>
-				<button>B</button>
-				<button>C</button>
-				<button>D</button>
-				<button>E</button>
+				<div class="bingo-square"><button class="square-button">A</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">B</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">C</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">D</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">E</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">A</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">B</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">C</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">D</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">E</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">A</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">B</button><button class="notes">+</button></div>
+				<div class="bingo-square free-space"><button class="square-button">C</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">D</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">E</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">A</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">B</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">C</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">D</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">E</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">A</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">B</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">C</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">D</button><button class="notes">+</button></div>
+				<div class="bingo-square"><button class="square-button">E</button><button class="notes">+</button></div>
 			</table>
 		</div>
 		<div id="footer">

@@ -8,11 +8,15 @@ function extract_random_element(array_) {
 }
 
 var VERSION = "v2";
-// FEET is in index 80 in the  trope array.
+// FEET is in index 80 in the trope array.
 var FEET = 80;
 
+function saveState(state) {
+	localStorage.setItem(VERSION, JSON.stringify(state));
+}
+
 onLoad = function() {
-	cells = document.querySelectorAll("button");
+	cells = document.querySelectorAll(".bingo-square");
 
 	// Load and store state in local storage
 	state = localStorage.getItem(VERSION);
@@ -30,9 +34,9 @@ onLoad = function() {
 		}
 		state = {
 			"tropes": tropes,
-			"checked": []
+			"checked": [],
 		}
-		localStorage.setItem(VERSION, JSON.stringify(state));
+		saveState(state);
 	} else {
 		state = JSON.parse(state);
 		for (var i = 0; i < cells.length; i++) {
@@ -41,20 +45,51 @@ onLoad = function() {
 			}
 		}
 	}
+	// Bootstrap notes for backwards compatibility.
+	if(!state.hasOwnProperty('notes')){
+		state.notes = [];
+	}
 
 	state.tropes.forEach(function(_, i) {
 		// Make an exception for the center box.
+		var bingoButton = cells[i].getElementsByClassName("square-button")[0];
 		if(i == 12) {
-			cells[i].innerHTML = 'FREE SPACE<br />(any work qualifies)';
+			bingoButton.innerHTML = "FREE SPACE<br />(any work qualifies)";
 		}
 		else {
-			cells[i].textContent = all_tropes[state.tropes[i]];
+			bingoButton.textContent = all_tropes[state.tropes[i]];
 		}
 		// Set up click listener to toggle "checked" class on target element
-		cells[i].addEventListener("click", function (event) {
-			event.currentTarget.classList.toggle("checked");
-			state.checked[i] = event.currentTarget.classList.contains("checked");
-			localStorage.setItem(VERSION, JSON.stringify(state));
+		bingoButton.addEventListener("click", function (event) {
+			event.currentTarget.parentElement.classList.toggle("checked");
+			state.checked[i] = event.currentTarget.parentElement.classList.contains("checked");
+			saveState(state);
+		});
+
+		//Set up click listener for dialog modal.
+		var notesButton = cells[i].getElementsByClassName("notes")[0];
+		notesButton.addEventListener("click", function(event) {
+			var dialog = document.getElementById("notes-dialog");
+			// Only try to access the state if we have enough elements in the array.
+			var notesState = state.notes.length > i ? state.notes[i] : null;
+			var urlNode = document.getElementById("url");
+			var notesTextNode = document.getElementById("notes-textarea");
+			if (notesState != null) {
+				urlNode.value = notesState.url;
+				notesTextNode.value = notesState.notes;
+			}
+			else {
+				urlNode.value = "";
+				notesTextNode.value = "";
+			}
+			dialog.showModal();
+			dialog.getElementsByTagName("button")[0].addEventListener("click", function(innerEvent){
+				dialog.close();
+				var url = urlNode.value;
+				var notesText = notesTextNode.value;
+				state.notes[i] = {'url': url, 'notes': notesText};
+				saveState(state);
+			});
 		});
 	});
 
@@ -67,7 +102,7 @@ onLoad = function() {
 	});
 };
 
-document.addEventListener('DOMContentLoaded', onLoad, false);
+document.addEventListener("DOMContentLoaded", onLoad, false);
 
 all_tropes = [
 	"fic last updated before 2020",
