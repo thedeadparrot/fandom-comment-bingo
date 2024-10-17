@@ -15,6 +15,14 @@ function saveState(state) {
 	localStorage.setItem(VERSION, JSON.stringify(state));
 }
 
+function loadState() {
+	state = localStorage.getItem(VERSION);
+	if (state) {
+		state = JSON.parse(state);
+	}
+	return state;
+}
+
 // Creates a brand new board.
 function generateNewBoard(cells, state) {
 		tropes = [];
@@ -37,32 +45,13 @@ function generateNewBoard(cells, state) {
 		return state;
 }
 
-onLoad = function() {
-	//Get stylesheet for document.
+function setUpNotesFeatureToggle() {
 	const styleEl = document.getElementsByTagName("style")[0];
 	const styleSheet = styleEl.sheet;
 	const notesToggleButton = document.getElementById("notes-toggle");
-
-	cells = document.querySelectorAll(".bingo-square");
-
-	// Load and store state in local storage
-	state = localStorage.getItem(VERSION);
-	if (!state) {
-		state = generateNewBoard(cells, state);
-	}
-	else {
-		state = JSON.parse(state);
-		for (var i = 0; i < cells.length; i++) {
-			if (state.checked[i]) {
-				cells[i].classList.add("checked");
-			}
-		}
-	}
-
-	// Setup toggle button.
 	notesToggleButton.addEventListener("click", function (event) {
 		if(notesToggleButton.textContent == "ON") {
-			styleSheet.insertRule(".notes {display: none;}", 0);
+			styleSheet.insertRule(".notes, .notes-dump {display: none;}", 0);
 			notesToggleButton.textContent = "OFF";
 		}
 		else {
@@ -70,6 +59,40 @@ onLoad = function() {
 			notesToggleButton.textContent = "ON";
 		}
 	});
+}
+
+function populateSummary(state, cells){
+	const details = document.getElementById("summary-text");
+	var summary = state.notes.reduce(function (curString, note, i) {
+		if(note && note.url && state.checked[i]) {
+			var squareName = cells[i].getElementsByClassName('square-button')[0].textContent;
+			var url = note.url;
+			var notes = note.notes;
+			return curString + `${squareName} - ${url} - ${notes}\n`;
+		}
+		return curString;
+	}, "");
+	details.value = summary;
+}
+
+onLoad = function() {
+	//Get stylesheet for document.
+
+	cells = document.querySelectorAll(".bingo-square");
+	var state = loadState();
+	// Load and store state in local storage
+	if (!state) {
+		state = generateNewBoard(cells, state);
+	}
+	else {
+		for (var i = 0; i < cells.length; i++) {
+			if (state.checked[i]) {
+				cells[i].classList.add("checked");
+			}
+		}
+	}
+
+	setUpNotesFeatureToggle();
 
 	// Bootstrap notes for backwards compatibility.
 	if(!state.hasOwnProperty('notes')){
@@ -89,6 +112,7 @@ onLoad = function() {
 		bingoButton.addEventListener("click", function (event) {
 			event.currentTarget.parentElement.classList.toggle("checked");
 			state.checked[i] = event.currentTarget.parentElement.classList.contains("checked");
+			populateSummary(state, cells);
 			saveState(state);
 		});
 
@@ -119,6 +143,8 @@ onLoad = function() {
 				var notesText = notesTextNode.value;
 				state.notes[i] = {'url': url, 'notes': notesText};
 				saveState(state);
+				populateSummary(state, cells);
+				// Clears out itself, so we don't add multiple event listeners to the button.
 				closeButton.removeEventListener("click", saveAndClose);
 			}
 
@@ -132,6 +158,8 @@ onLoad = function() {
 		});
 
 	});
+
+	populateSummary(state, cells);
 
 	const resetButtons = document.querySelectorAll(".reset");
 	resetButtons.forEach(function (button) {

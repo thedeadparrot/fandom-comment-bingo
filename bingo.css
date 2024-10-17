@@ -26,6 +26,10 @@ button {
 	cursor: pointer;
 }
 
+.notes-dump {
+	margin-top: 20px;
+}
+
 .square-button {
 	flex-grow: 1;
 	font-family: 'Roboto Condensed', sans-serif;
