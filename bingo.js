@@ -111,14 +111,18 @@ onLoad = function() {
 				notesTextNode.value = "";
 			}
 			dialog.showModal();
+			var closeButton = dialog.getElementsByClassName("save-and-close")[0];
 			// Set the behavior for the modal to save the contents for the notes fields.
-			dialog.getElementsByClassName("save-and-close")[0].addEventListener("click", function(innerEvent){
+			function saveAndClose(innerEvent) {
 				dialog.close();
-				const url = urlNode.value;
-				const notesText = notesTextNode.value;
+				var url = urlNode.value;
+				var notesText = notesTextNode.value;
 				state.notes[i] = {'url': url, 'notes': notesText};
 				saveState(state);
-			});
+				closeButton.removeEventListener("click", saveAndClose);
+			}
+
+			closeButton.addEventListener("click", saveAndClose);
 
 			// Set up go to button.
 			dialog.getElementsByClassName("go-to-url")[0].addEventListener("click", function(innerEvent){
